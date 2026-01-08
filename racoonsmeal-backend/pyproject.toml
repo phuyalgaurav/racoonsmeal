@@ -1,9 +1,10 @@
 [project]
 name = "racoonsmeal-backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "A meal planner that gives you the most random meals for your day but balances calories & nutrients for the day"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "django>=6.0.1",
+    "django-environ>=0.12.0",
 ]
