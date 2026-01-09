@@ -7,7 +7,6 @@ class User(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)
 
     class Meta:
-        db_name = "users"
         verbose_name = "User"
         verbose_name_plural = "Users"
 
