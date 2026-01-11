@@ -41,7 +41,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {"fields": ("username", "password")}),
         (
             "Personal Info",
-            {"fields": ("first_name", "last_name", "email", "bio", "date_of_birth")},
+            {"fields": ("first_name", "last_name", "email", "date_of_birth")},
         ),
         (
             "Permissions",
@@ -70,7 +70,7 @@ class UserAdmin(BaseUserAdmin):
             "Additional Info",
             {
                 "classes": ("wide",),
-                "fields": ("first_name", "last_name", "bio", "date_of_birth"),
+                "fields": ("first_name", "last_name", "date_of_birth"),
             },
         ),
     )
