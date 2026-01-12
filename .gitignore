@@ -11,7 +11,7 @@ wheels/
 
 # Environment variables
 racoonsmeal-backend/.env
-
+racoonsmeal-backend/prod/.env.prod
 # Skip the frontend beacause it will be a submodule
 racoonsmeal-frontend/
 

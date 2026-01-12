@@ -48,3 +48,6 @@ STORAGES = {
 DATABASES = {
     "default": env.db("DATABASE_URL"),
 }
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
