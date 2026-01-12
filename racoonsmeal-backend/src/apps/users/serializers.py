@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
+from .models import UserProfile
 
 User = get_user_model()
 
@@ -48,7 +49,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop("password2")
-        user = User.objects.create(**validated_data)
+        user = User.objects.create_user(**validated_data)
         return user
 
 
@@ -81,15 +82,25 @@ class ChangePasswordSerializer(serializers.Serializer):
         return user
 
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User.profile.related.model
+        model = User
+        fields = ("id", "username", "email", "first_name", "last_name", "date_of_birth")
+
+
+class UserProfileNestedSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    followers = UserSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = UserProfile
         fields = (
+            "id",
             "bio",
-            "profile_picture",
             "height_cm",
             "weight_kg",
-            "activity_level",
+            "profile_picture",
+            "user",
             "followers",
         )
-        read_only_fields = ("id", "user")
+        read_only_fields = ("id", "user", "followers")
