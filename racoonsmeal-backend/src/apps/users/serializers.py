@@ -79,3 +79,17 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.set_password(self.validated_data["new_password"])
         user.save()
         return user
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User.profile.related.model
+        fields = (
+            "bio",
+            "profile_picture",
+            "height_cm",
+            "weight_kg",
+            "activity_level",
+            "followers",
+        )
+        read_only_fields = ("id", "user")

@@ -58,18 +58,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
@@ -157,3 +145,19 @@ CORS_ALLOW_HEADERS = [
 
 # TODO: Remove this in production
 CORS_ALLOW_ALL_ORIGINS = True
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": env("STORAGE_BUCKET_NAME"),
+            "access_key": env("STORAGE_ACCESS_KEY_ID"),
+            "secret_key": env("STORAGE_ACCESS_KEY"),
+            "endpoint_url": env("STORAGE_ENDPOINT_URL"),
+            "region_name": "auto",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}

@@ -1,22 +1,18 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from .models import User
-from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
+from .models import User, UserProfile
+from .serializers import (
+    RegisterSerializer,
+    UserSerializer,
+    ChangePasswordSerializer,
+    UserProfileSerializer,
+)
 
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
-
-
-class UserProfileView(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UserSerializer
-
-    def get_object(self):
-        return self.request.user
 
 
 class ChangePasswordView(generics.UpdateAPIView):
@@ -33,3 +29,12 @@ class ChangePasswordView(generics.UpdateAPIView):
         return Response(
             {"detail": "Password updated successfully"}, status=status.HTTP_200_OK
         )
+
+
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    queryset = UserProfile.objects.all()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        return self.request.user.profile

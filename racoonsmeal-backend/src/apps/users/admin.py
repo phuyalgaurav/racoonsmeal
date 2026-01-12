@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import User
+from .models import User, UserProfile
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -76,3 +76,13 @@ class UserAdmin(BaseUserAdmin):
     )
 
     readonly_fields = ("last_login", "date_joined")
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ("username", "bio", "height_cm", "weight_kg", "activity_level")
+    search_fields = ("user__username", "bio", "activity_level")
+    ordering = ("user__username",)
+
+    def username(self, obj):
+        return obj.user.username
