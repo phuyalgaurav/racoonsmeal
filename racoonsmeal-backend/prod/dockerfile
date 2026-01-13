@@ -23,7 +23,8 @@ FROM python:3.13-slim AS runtime
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     VIRTUAL_ENV="/venv" \
-    PATH="/venv/bin:/root/.local/bin:$PATH"
+    PATH="/venv/bin:/root/.local/bin:$PATH" \
+    PYTHONPATH="/app/src"
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \

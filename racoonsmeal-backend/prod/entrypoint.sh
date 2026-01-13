@@ -11,6 +11,8 @@ fi
 
 exec gunicorn \
 	config.wsgi:application \
+	--chdir /app/src \
+	--pythonpath /app/src \
 	--bind 0.0.0.0:8000 \
 	--workers "${GUNICORN_WORKERS:-3}" \
 	--threads "${GUNICORN_THREADS:-2}" \
