@@ -2,22 +2,37 @@ FROM python:3.13-slim AS builder
 ENV UV_LINK_MODE=copy UV_SYSTEM_PYTHON=1
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl build-essential \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    build-essential \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    libtiff-dev \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
     && curl -LsSf https://astral.sh/uv/install.sh | sh \
     && ln -s /root/.local/bin/uv /usr/local/bin/uv
 
 COPY pyproject.toml uv.lock ./
-RUN --mount=type=cache,target=/root/.cache uv sync --locked --no-install-project --group prod
+RUN uv sync --locked --no-install-project --group prod
 
 COPY . .
-RUN --mount=type=cache,target=/root/.cache uv sync --locked --group prod
+RUN uv sync --locked --group prod
 FROM python:3.13-slim AS runtime
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     VIRTUAL_ENV="/venv" \
     PATH="/venv/bin:/root/.local/bin:$PATH"
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libjpeg62-turbo \
+    libpng16-16 \
+    libwebp7 \
+    libtiff6 \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /root/.local/bin/uv /usr/local/bin/uv
 COPY --from=builder /app/.venv /venv
